@@ -1,0 +1,24 @@
+language: python
+sudo: false
+
+env:
+  matrix:
+    - RELEASE="lua-reql"
+
+before_install:
+  - pip install hererocks
+  - hererocks here/lua52 -r^ --lua 5.2
+  - source here/lua52/bin/activate
+
+install:
+  - luarocks install $RELEASE
+
+before_script:
+  - wget http://download.rethinkdb.com/apt/pool/precise/main/r/rethinkdb/rethinkdb_2.3.4~0precise_amd64.deb
+  - ar x *.deb
+  - tar xvzf data.tar.gz
+  - ./usr/bin/rethinkdb --daemon
+  - luarocks install busted
+
+script:
+  - busted --exclude-tags="expensive"
