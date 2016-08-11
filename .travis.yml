@@ -19,6 +19,7 @@ before_script:
   - tar xvzf data.tar.gz
   - ./usr/bin/rethinkdb --daemon
   - luarocks install busted
+  - luarocks install mm
 
 script:
-  - busted --exclude-tags="expensive"
+  - busted
