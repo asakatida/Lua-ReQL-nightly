@@ -14,10 +14,10 @@ install:
   - luarocks install $RELEASE
 
 before_script:
-  - wget http://download.rethinkdb.com/apt/pool/precise/main/r/rethinkdb/rethinkdb_2.3.4~0precise_amd64.deb
-  - ar x *.deb
-  - tar xvzf data.tar.gz
-  - ./usr/bin/rethinkdb --daemon
+#  - wget http://download.rethinkdb.com/apt/pool/precise/main/r/rethinkdb/rethinkdb_2.3.4~0precise_amd64.deb
+#  - ar x *.deb
+#  - tar xvzf data.tar.gz
+#  - ./usr/bin/rethinkdb --daemon
   - luarocks install busted
   - luarocks install mm
 
