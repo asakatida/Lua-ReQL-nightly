@@ -4,6 +4,7 @@ MAINTAINER Adam Grandquist <grandquista@gmail.com>
 
 RUN apk update
 RUN apk add --no-cache build-base curl git openssl-dev perl wget unzip
+RUN apk add --update --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ tini docker
 
 RUN wget http://keplerproject.github.io/luarocks/releases/luarocks-2.3.0.tar.gz
 RUN tar -xf luarocks-2.3.0.tar.gz
@@ -24,4 +25,4 @@ RUN cpanm -v --notest Test::Nginx::Socket
 
 ADD t t
 
-RUN prove -r t
+RUN docker run rethinkdb && prove -r t
