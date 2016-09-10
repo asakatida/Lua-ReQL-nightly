@@ -1,25 +1,12 @@
-language: python
-sudo: false
+sudo: required
 
-env:
-  matrix:
-    - RELEASE="lua-reql"
+services:
+  - docker
 
 before_install:
-  - pip install hererocks
-  - hererocks here/lua52 -r^ --lua 5.2
-  - source here/lua52/bin/activate
-
-install:
-  - luarocks install $RELEASE
-
-before_script:
-#  - wget http://download.rethinkdb.com/apt/pool/precise/main/r/rethinkdb/rethinkdb_2.3.4~0precise_amd64.deb
-#  - ar x *.deb
-#  - tar xvzf data.tar.gz
-#  - ./usr/bin/rethinkdb --daemon
-  - luarocks install busted
-  - luarocks install mm
+  - docker build -t carlad/sinatra .
+  - docker run -d -p 127.0.0.1:80:4567 carlad/sinatra /bin/sh -c "cd /root/sinatra; bundle exec foreman start;"
+  - docker ps -a
 
 script:
-  - busted
+  - docker run carlad/sinatra /bin/sh -c "/usr/bin/rethinkdb --daemon && prove -r t"

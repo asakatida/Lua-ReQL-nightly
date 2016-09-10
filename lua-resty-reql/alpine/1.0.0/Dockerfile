@@ -23,6 +23,6 @@ RUN cpan App::cpanminus
 RUN cpanm -v --notest Test::Nginx
 RUN cpanm -v --notest Test::Nginx::Socket
 
-ADD t t
+COPY t t
 
 RUN docker run rethinkdb && prove -r t
