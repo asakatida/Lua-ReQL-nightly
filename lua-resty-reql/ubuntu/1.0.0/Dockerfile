@@ -16,7 +16,3 @@ RUN ln /usr/local/openresty/nginx/sbin/nginx /usr/local/sbin/
 RUN wget https://download.rethinkdb.com/apt/pool/xenial/main/r/rethinkdb/rethinkdb_2.3.5~0xenial_amd64.deb
 RUN ar x rethinkdb_2.3.5~0xenial_amd64.deb
 RUN tar xvf data.tar.xz
-
-COPY t t
-
-RUN ./usr/bin/rethinkdb --daemon && prove -r t

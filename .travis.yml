@@ -5,8 +5,8 @@ services:
 
 before_install:
   - docker build -t grandquista/lua-resty-reql lua-resty-reql/ubuntu/1.0.0
-  - docker run -d -p 127.0.0.1:80:4567 grandquista/lua-resty-reql /bin/sh -c "cd /root/sinatra; bundle exec foreman start;"
+  - docker run -d -p 127.0.0.1:80:4567 grandquista/lua-resty-reql /bin/sh -c "/usr/bin/rethinkdb"
   - docker ps -a
 
 script:
-  - docker run grandquista/lua-resty-reql /bin/sh -c "/usr/bin/rethinkdb --daemon && prove -r t"
+  - docker run grandquista/lua-resty-reql /bin/sh -c "prove -r t"
