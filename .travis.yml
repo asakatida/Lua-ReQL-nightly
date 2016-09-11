@@ -1,10 +1,15 @@
 sudo: required
 
+env:
+  matrix:
+    - RESTY_REQL_PATH="lua-resty-reql/ubuntu/1.0.0"
+    - RESTY_REQL_PATH="lua-resty-reql/alpine/1.0.0"
+
 services:
   - docker
 
 before_install:
-  - docker build -t grandquista/lua-resty-reql lua-resty-reql/ubuntu/1.0.0
+  - docker build -t grandquista/lua-resty-reql $RESTY_REQL_PATH
   - docker run -d -p 127.0.0.1:80:4567 grandquista/lua-resty-reql /bin/sh -c "/usr/bin/rethinkdb"
   - docker ps -a
 
