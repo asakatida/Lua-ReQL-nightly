@@ -10,7 +10,7 @@ services:
 
 before_install:
   - docker build -t grandquista/lua-resty-reql $RESTY_REQL_PATH
-  - docker run -d -p 127.0.0.1:80:4567 grandquista/lua-resty-reql /bin/sh -c "/usr/bin/rethinkdb"
+  - docker run --network host rethinkdb/rethinkdb
   - docker ps -a
 
 script:
