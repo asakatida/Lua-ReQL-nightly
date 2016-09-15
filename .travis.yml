@@ -10,10 +10,10 @@ services:
 
 before_install:
   - docker build -t grandquista/lua-resty-reql $RESTY_REQL_PATH
-  - docker run -d grandquista/lua-resty-reql --network host -P
-  - docker cp t/ grandquista/lua-resty-reql:t
+  - REQL_UUID="$(docker run -d grandquista/lua-resty-reql --hostname reql --network host -P)"
+  - docker cp t/ $REQL_UUID:t
   - docker run -d -p 127.0.0.1:28015:28015 rethinkdb
   - docker ps -a
 
 script:
-  - docker exec -it grandquista/lua-resty-reql prove -r t
+  - docker exec -it $REQL_UUID prove -r t
