@@ -16,3 +16,5 @@ RUN cd luarocks-2.3.0 && make bootstrap
 RUN luarocks install Lua-ReQL
 
 RUN cpan Test::Nginx::Socket::Lua
+
+ENTRYPOINT ["prove", "-r", "t"]

@@ -1,19 +1,19 @@
 sudo: required
 
+language: ruby
+
+services:
+  - docker
+
 env:
   matrix:
     - RESTY_REQL_PATH="lua-resty-reql/ubuntu/1.0.0"
     - RESTY_REQL_PATH="lua-resty-reql/alpine/1.0.0"
 
-services:
-  - docker
-
 before_install:
-  - docker build -t grandquista/lua-resty-reql $RESTY_REQL_PATH
-  - REQL_UUID="$(docker run -d grandquista/lua-resty-reql --hostname reql --network host -P)"
+  - docker build -t grandquista/lua-resty-reql -f $RESTY_REQL_PATH
+  - REQL_UUID="$(docker create -h reql --network host -P grandquista/lua-resty-reql)"
   - docker cp t/ $REQL_UUID:t
   - docker run -d -p 127.0.0.1:28015:28015 rethinkdb
   - docker ps -a
-
-script:
-  - docker exec -it $REQL_UUID prove -r t
+  - docker start $REQL_UUID
