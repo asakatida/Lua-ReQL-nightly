@@ -11,4 +11,4 @@ RUN cpan Test::Nginx::Socket::Lua
 
 RUN ln /usr/local/openresty/nginx/sbin/nginx /usr/local/sbin/
 
-ENTRYPOINT ["prove", "-r", "t"]
+ENTRYPOINT ["/bin/sh", "-c"]

@@ -17,4 +17,4 @@ RUN luarocks install Lua-ReQL
 
 RUN cpan Test::Nginx::Socket::Lua
 
-ENTRYPOINT ["prove", "-r", "t"]
+ENTRYPOINT ["/bin/sh", "-c"]
