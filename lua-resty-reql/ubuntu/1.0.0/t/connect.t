@@ -20,14 +20,16 @@ __DATA__
       content_by_lua "
         local r = require 'rethinkdb'
 
-        r.connect(function(err, c)
-          if err then
-            error(err.message())
-          end
+        local c, err = r.connect()
 
-          assert(c, 'Connection failed')
-          ngx.print('pass')
-        end)
+        if err then
+          ngx.print(err.msg)
+          error(err.message())
+        end
+
+        assert(c, 'Connection failed')
+
+        ngx.print('pass')
       ";
     }
 --- request
