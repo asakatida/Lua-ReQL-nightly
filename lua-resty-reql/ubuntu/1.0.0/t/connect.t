@@ -19,17 +19,19 @@ __DATA__
     location /t {
       content_by_lua "
         local r = require 'rethinkdb'
+        local m = require 'Test.More'
+
+        m.plan(2)
 
         local c, err = r.connect('127.0.0.1')
 
+        m.type_ok(err, 'nil')
+
         if err then
-          ngx.print(err.msg)
-          error(err.message())
+          m.ok(false, err.message())
+        else
+          m.type_ok(c, 'table', 'Connection failed')
         end
-
-        assert(c, 'Connection failed')
-
-        ngx.print('pass')
       ";
     }
 --- request

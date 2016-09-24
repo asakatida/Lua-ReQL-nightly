@@ -6,6 +6,7 @@ RUN apt-get update
 RUN apt-get install -y cpanminus git libssl-dev
 
 RUN /usr/local/openresty/luajit/bin/luarocks install Lua-ReQL
+RUN /usr/local/openresty/luajit/bin/luarocks install lua-testmore
 
 RUN cpan Test::Nginx::Socket::Lua
 

@@ -19,6 +19,7 @@ __DATA__
     location /t {
       content_by_lua "
         local r = require 'rethinkdb'
+        local m = require 'Test.More'
 
         local reql_db = 'dbtest'
         local reql_table = 'test'
@@ -27,14 +28,17 @@ __DATA__
           name = document_name
         }
 
+        m.plan(2)
+
         local c, conn_err = r.connect('127.0.0.1')
 
-        if conn_err then
-          ngx.print(conn_err.msg)
-          error(conn_err.message())
-        end
+        m.type_ok(conn_err, 'nil')
 
-        assert(c, 'Connection failed')
+        if conn_err then
+          m.ok(false, conn_err.message())
+        else
+          m.type_ok(c, 'table', 'Connection failed')
+        end
 
         -- init db
         r.reql.db_create(reql_db).run(c).to_array()

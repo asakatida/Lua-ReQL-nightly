@@ -14,6 +14,7 @@ RUN cd luarocks-2.3.0 && ./configure \
 RUN cd luarocks-2.3.0 && make bootstrap
 
 RUN luarocks install Lua-ReQL
+RUN luarocks install lua-testmore
 
 RUN cpan Test::Nginx::Socket::Lua
 
