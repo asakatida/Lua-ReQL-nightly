@@ -20,7 +20,7 @@ __DATA__
       content_by_lua "
         local r = require 'rethinkdb'
 
-        local c, err = r.connect()
+        local c, err = r.connect('127.0.0.1')
 
         if err then
           ngx.print(err.msg)

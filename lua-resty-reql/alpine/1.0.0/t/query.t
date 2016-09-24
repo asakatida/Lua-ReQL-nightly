@@ -27,7 +27,7 @@ __DATA__
           name = document_name
         }
 
-        local c, conn_err = r.connect()
+        local c, conn_err = r.connect('127.0.0.1')
 
         if conn_err then
           ngx.print(conn_err.msg)
