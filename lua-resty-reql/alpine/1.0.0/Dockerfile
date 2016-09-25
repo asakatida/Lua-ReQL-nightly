@@ -20,4 +20,6 @@ RUN cpan Test::Nginx::Socket::Lua
 
 COPY t t
 
+RUN ln /usr/local/openresty/nginx/sbin/nginx /usr/local/bin/
+
 ENTRYPOINT ["prove", "-r", "t"]
