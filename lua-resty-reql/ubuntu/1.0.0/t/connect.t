@@ -1,7 +1,5 @@
 use Test::Nginx::Socket::Lua;
 
-plan tests => repeat_each() * (3 * blocks());
-
 our $HttpConfig = <<'_EOC_';
     lua_package_path 'src/?.lua;src/?/?.lua;;';
     error_log logs/error.log debug;
@@ -21,17 +19,17 @@ __DATA__
         local r = require 'rethinkdb'
         local m = require 'Test.More'
 
-        m.plan(2)
+        m.plan('no_plan')
 
         local c, err = r.connect('127.0.0.1')
-
-        m.type_ok(err, 'nil')
 
         if err then
           m.ok(false, err.message())
         else
           m.type_ok(c, 'table', 'Connection failed')
         end
+
+        m.done_testing()
       ";
     }
 --- request

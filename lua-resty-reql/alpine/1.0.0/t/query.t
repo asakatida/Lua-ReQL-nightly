@@ -1,7 +1,5 @@
 use Test::Nginx::Socket::Lua;
 
-plan tests => repeat_each() * (3 * blocks());
-
 our $HttpConfig = <<'_EOC_';
     lua_package_path 'src/?.lua;src/?/?.lua;;';
     error_log logs/error.log debug;
@@ -28,11 +26,9 @@ __DATA__
           name = document_name
         }
 
-        m.plan(2)
+        m.plan('no_plan')
 
         local c, conn_err = r.connect('127.0.0.1')
-
-        m.type_ok(conn_err, 'nil')
 
         if conn_err then
           m.ok(false, conn_err.message())
@@ -45,51 +41,37 @@ __DATA__
         c.use(reql_db)
         local cur, err = r.reql.table_create(reql_table).run(c)
 
-        if err then
-          error(err.message())
-        end
+        m.type_ok(cur, 'table', err and err.message() or 'no message')
 
         cur.to_array()
 
         -- remove data
         cur, err = r.reql.table(reql_table).delete().run(c)
 
-        if err then
-          error(err.message())
-        end
+        m.type_ok(cur, 'table', err and err.message() or 'no message')
 
         cur.to_array()
 
         -- insert doc
         cur, err = r.reql.table(reql_table).insert(document).run(c)
 
-        if err then
-          error(err.message())
-        end
+        m.type_ok(cur, 'table', err and err.message() or 'no message')
 
         _, err = cur.to_array()
 
-        if err then
-          error(err.message())
-        end
+        m.type_ok(err, 'nil', err and err.message() or 'no message')
 
         cur, err = r.reql.table(reql_table).run(c)
 
-        if err then
-          error(err.message())
-        end
+        m.type_ok(cur, 'table', err and err.message() or 'no message')
 
         local arr, err = cur.to_array()
 
-        if err then
-          error(err.message())
-        end
+        m.is_deeply(arr[1], document, err and err.message() or 'no message')
 
-        assert(#arr == 1, 'Wrong array length')
+        m.is_deeply(#arr, 1, 'Wrong array length')
 
-        assert(arr[1].name == document_name, 'Wrong document name')
-
-        ngx.print('pass')
+        m.done_testing()
       ";
     }
 --- request
