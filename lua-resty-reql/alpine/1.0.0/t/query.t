@@ -36,40 +36,52 @@ __DATA__
           m.type_ok(c, 'table', 'Connection failed')
         end
 
-        -- init db
-        r.reql.db_create(reql_db).run(c).to_array()
-        c.use(reql_db)
-        local cur, err = r.reql.table_create(reql_table).run(c)
+        if c then
+          -- init db
+          r.reql.db_create(reql_db).run(c).to_array()
+          c.use(reql_db)
+          local cur, err = r.reql.table_create(reql_table).run(c)
 
-        m.type_ok(cur, 'table', err and err.message() or 'no message')
+          m.type_ok(cur, 'table', err and err.message() or 'no message')
 
-        cur.to_array()
+          if cur then
+            cur.to_array()
 
-        -- remove data
-        cur, err = r.reql.table(reql_table).delete().run(c)
+            -- remove data
+            cur, err = r.reql.table(reql_table).delete().run(c)
 
-        m.type_ok(cur, 'table', err and err.message() or 'no message')
+            m.type_ok(cur, 'table', err and err.message() or 'no message')
 
-        cur.to_array()
+            if cur then
+              cur.to_array()
 
-        -- insert doc
-        cur, err = r.reql.table(reql_table).insert(document).run(c)
+              -- insert doc
+              cur, err = r.reql.table(reql_table).insert(document).run(c)
 
-        m.type_ok(cur, 'table', err and err.message() or 'no message')
+              m.type_ok(cur, 'table', err and err.message() or 'no message')
 
-        _, err = cur.to_array()
+              if cur then
+                _, err = cur.to_array()
 
-        m.type_ok(err, 'nil', err and err.message() or 'no message')
+                m.type_ok(err, 'nil', err and err.message() or 'no message')
 
-        cur, err = r.reql.table(reql_table).run(c)
+                if cur then
+                  cur, err = r.reql.table(reql_table).run(c)
 
-        m.type_ok(cur, 'table', err and err.message() or 'no message')
+                  m.type_ok(cur, 'table', err and err.message() or 'no message')
 
-        local arr, err = cur.to_array()
+                  if cur then
+                    local arr, err = cur.to_array()
 
-        m.is_deeply(arr[1], document, err and err.message() or 'no message')
+                    m.is_deeply(arr and #arr, 1, err and err.message() or 'Wrong array length')
 
-        m.is_deeply(#arr, 1, 'Wrong array length')
+                    m.is_deeply(arr[1], document, err and err.message() or 'no message')
+                  end
+                end
+              end
+            end
+          end
+        end
 
         m.done_testing()
       ";
