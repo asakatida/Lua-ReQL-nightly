@@ -5,8 +5,8 @@ MAINTAINER Adam Grandquist <grandquista@gmail.com>
 RUN apk update
 RUN apk add --no-cache build-base curl git openssl-dev perl-dev unzip
 
-RUN luarocks install Lua-ReQL
-RUN luarocks install lua-testmore
+RUN /usr/local/openresty/luajit/bin/luarocks install Lua-ReQL
+RUN /usr/local/openresty/luajit/bin/luarocks install lua-testmore
 
 RUN cpan Test::Nginx::Socket::Lua
 
