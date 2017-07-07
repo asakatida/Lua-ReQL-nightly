@@ -12,7 +12,7 @@ env:
 
 before_install:
   - docker build -t grandquista/lua-resty-reql $RESTY_REQL_PATH
-  - docker run -d -p 127.0.0.1:28015:28015 rethinkdb
+  - docker run -d --network host -p 28015:28015 rethinkdb
   - docker ps -a
 
 script:
